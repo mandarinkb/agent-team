@@ -1,0 +1,38 @@
+{
+    "statusLine": {
+        "type": "command",
+        "command": "bash ${CLAUDE_PROJECT_DIR}/.claude/statusline.sh"
+    },
+    "hooks": {
+        "UserPromptSubmit": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/start.sh"
+                    }
+                ]
+            }
+        ],
+        "PermissionRequest": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/approve.sh"
+                    }
+                ]
+            }
+        ],
+        "Stop": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/stop.sh"
+                    }
+                ]
+            }
+        ]
+    }
+}
