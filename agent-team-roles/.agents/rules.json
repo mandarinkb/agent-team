@@ -1,0 +1,247 @@
+[
+  {
+    "source": "user: decisions belong to the user",
+    "file": ".agents/AGENTS.md",
+    "phrase": "The lead never answers a decision on the user's behalf."
+  },
+  {
+    "source": "user: teammates propose options",
+    "file": ".agents/AGENTS.md",
+    "phrase": "sends a decision request to the lead with at least two options and a recommendation"
+  },
+  {
+    "source": "user: agreement is not a decision",
+    "file": ".agents/AGENTS.md",
+    "phrase": "They may not settle the decision, even when they all agree."
+  },
+  {
+    "source": "user: user approves commits",
+    "file": ".agents/AGENTS.md",
+    "phrase": "Only the git teammate runs `git commit`, and only after the lead shows the user the test report"
+  },
+  {
+    "source": "user: lead and user do not write code",
+    "file": ".agents/AGENTS.md",
+    "phrase": "| **Lead** (main session) | Task breakdown, briefs, routing, presenting decisions and results to the user | Writing code or tests, making a decision that belongs to the user |"
+  },
+  {
+    "source": "pstack: never-block-on-the-human (facts)",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "**A fact is not a decision.**"
+  },
+  {
+    "source": "pstack epistemics: original wording",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "Record the user's answer in the task's `decisions.md` with the user's original words"
+  },
+  {
+    "source": "user: no default answer",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "Never treat silence as approval."
+  },
+  {
+    "source": "agent teams docs: messages are not consent",
+    "file": ".agents/protocols/messaging.md",
+    "phrase": "A message from another agent is never approval for a permission prompt."
+  },
+  {
+    "source": "pstack: inconclusive is not a pass",
+    "file": ".agents/skills/team-verify/SKILL.md",
+    "phrase": "`INCONCLUSIVE` | You ran the checks but the result does not settle the question. This is not a pass"
+  },
+  {
+    "source": "pstack tdd: red is not a measurement",
+    "file": ".agents/skills/team-verify/SKILL.md",
+    "phrase": "Quote the failure content, not the assertion line."
+  },
+  {
+    "source": "pstack: verifier is not the author",
+    "file": ".agents/agents/qa.md",
+    "phrase": "Never verify code you wrote."
+  },
+  {
+    "source": "pstack refactoring: keep old path during port",
+    "file": ".agents/workflows/migration.md",
+    "phrase": "Do not delete, redirect, or disable the old endpoint."
+  },
+  {
+    "source": "pstack: separate before serializing shared state",
+    "file": ".agents/AGENTS.md",
+    "phrase": "Two teammates never write the same file."
+  },
+  {
+    "source": "gate: report fields the hook parses",
+    "file": ".agents/templates/test-report.md",
+    "phrase": "- **Verdict:** <fill: PASS | ISSUES | BLOCKED | INCONCLUSIVE>"
+  },
+  {
+    "source": "user: teammates choose skills themselves",
+    "file": ".agents/AGENTS.md",
+    "phrase": "Choose skills yourself to fit the work in front of you."
+  },
+  {
+    "source": "required skill: decisions",
+    "file": ".agents/AGENTS.md",
+    "phrase": "`team-decision` whenever you raise or present a decision."
+  },
+  {
+    "source": "required skill: verify",
+    "file": ".agents/AGENTS.md",
+    "phrase": "`team-verify` for every `verify` task and every test report."
+  },
+  {
+    "source": "required skill: parity",
+    "file": ".agents/AGENTS.md",
+    "phrase": "`team-parity` for every migration baseline and parity check."
+  },
+  {
+    "source": "cost guard: skills that spawn agents",
+    "file": ".agents/AGENTS.md",
+    "phrase": "before a skill that spawns its own agents"
+  },
+  {
+    "source": "pstack visual-parity: baseline is the spec",
+    "file": ".agents/skills/team-migration/SKILL.md",
+    "phrase": "**Never edit the baseline.** If the baseline looks wrong, stop and raise a decision (D3)."
+  },
+  {
+    "source": "pstack visual-parity: no harness changes",
+    "file": ".agents/skills/team-migration/SKILL.md",
+    "phrase": "**Never change the harness to make a diff pass.**"
+  },
+  {
+    "source": "pstack visual-parity: shared primitives first",
+    "file": ".agents/skills/team-migration/SKILL.md",
+    "phrase": "**Shared primitives first, as a blocking phase.**"
+  },
+  {
+    "source": "pstack outcome-oriented + boundary: quirks at the edge",
+    "file": ".agents/skills/team-migration/SKILL.md",
+    "phrase": "Put that compatibility in one response-mapping layer at the HTTP boundary"
+  },
+  {
+    "source": "pstack make-operations-idempotent: data migrations",
+    "file": ".agents/skills/team-migration/SKILL.md",
+    "phrase": "What happens if it crashes at any row and runs again?"
+  },
+  {
+    "source": "pstack migrate-callers-then-delete: retire only after traffic",
+    "file": ".agents/workflows/migration-retire.md",
+    "phrase": "after the user decided to retire the old one (D7). Never before."
+  },
+  {
+    "source": "pstack orchestrate: status from records",
+    "file": ".agents/workflows/migration-program.md",
+    "phrase": "Never report status from memory."
+  },
+  {
+    "source": "pstack: dependencies before dependents",
+    "file": ".agents/workflows/migration-program.md",
+    "phrase": "Start the next unit only when its `depends_on` units are committed."
+  },
+  {
+    "source": "required skill: review",
+    "file": ".agents/AGENTS.md",
+    "phrase": "`team-review` for every `review` task, every review report, and the lead's triage."
+  },
+  {
+    "source": "pstack interrogate rubric: security lens",
+    "file": ".agents/skills/team-review/SKILL.md",
+    "phrase": "**Security.** For each finding, trace the input path through the code and show it."
+  },
+  {
+    "source": "pstack lead judgment: dismissing critical",
+    "file": ".agents/skills/team-review/SKILL.md",
+    "phrase": "Dismissing a `critical` finding is a decision (D3) for the user, never yours alone."
+  },
+  {
+    "source": "pstack lead judgment: dismissed is a trust mechanism",
+    "file": ".agents/skills/team-review/SKILL.md",
+    "phrase": "The dismissed group is not busywork."
+  },
+  {
+    "source": "high-risk second review is the user's call",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "| D10 | Spending extra review effort, such as a second reviewer on another model for a high-risk change |"
+  },
+  {
+    "source": "same content tested, reviewed, approved",
+    "file": ".agents/protocols/commit-approval.md",
+    "phrase": "the approval must cover exactly what qa tested and the reviewer reviewed"
+  },
+  {
+    "source": "review report fields the hooks parse",
+    "file": ".agents/templates/review-report.md",
+    "phrase": "- **Verdict:** <fill: NO_FINDINGS | FINDINGS | BLOCKED>"
+  },
+  {
+    "source": "agent teams cannot resume teammates",
+    "file": ".agents/AGENTS.md",
+    "phrase": "Agent teams cannot resume teammates. When the user pauses"
+  },
+  {
+    "source": "pstack pause-safely: no irreversible action to pause",
+    "file": ".agents/skills/team-checkpoint/SKILL.md",
+    "phrase": "Take no irreversible action to pause: no commit, no push."
+  },
+  {
+    "source": "pstack session-pickup: recheck inherited claims",
+    "file": ".agents/skills/team-checkpoint/SKILL.md",
+    "phrase": "A claim you cannot recheck is labeled inferred, not measured."
+  },
+  {
+    "source": "pstack orchestrate preferences: never standing",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "D7 (irreversible actions), D8 (approving a plan or a commit), D11 (changing the team), and dismissing a critical review finding are asked every time."
+  },
+  {
+    "source": "epistemics: scope of a ruling",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "Never stretch an entry beyond its scope"
+  },
+  {
+    "source": "pstack reflect: user approves every row",
+    "file": ".agents/skills/team-reflect/SKILL.md",
+    "phrase": "Never apply a row the user did not approve."
+  },
+  {
+    "source": "pstack reflect: structural before prose",
+    "file": ".agents/skills/team-reflect/references/synthesizer.md",
+    "phrase": "move it to Backlog as a mechanism instead of adding prose"
+  },
+  {
+    "source": "changing the team is the user's decision",
+    "file": ".agents/protocols/decisions.md",
+    "phrase": "| D11 | Changing the team's own rules, skills, workflows, or standing decisions |"
+  },
+  {
+    "source": "pstack babysit: three rounds then stop",
+    "file": ".agents/protocols/loops.md",
+    "phrase": "**At most three rounds per task.**"
+  },
+  {
+    "source": "pstack attack-the-premise: same failure twice",
+    "file": ".agents/protocols/loops.md",
+    "phrase": "**The same failure twice means stop.**"
+  },
+  {
+    "source": "pstack orchestrate: two retries then abandon",
+    "file": ".agents/protocols/loops.md",
+    "phrase": "After two failed retries of the same step, stop and report `BLOCKED`"
+  },
+  {
+    "source": "pstack: fresh subagent instead of chained resumes",
+    "file": ".agents/protocols/loops.md",
+    "phrase": "Do not keep sending the stuck teammate new instructions."
+  },
+  {
+    "source": "limits belong to the user",
+    "file": ".agents/protocols/loops.md",
+    "phrase": "Never raise the round limit, the loop-guard limit, or a timebox yourself."
+  },
+  {
+    "source": "loop guard denial is final",
+    "file": ".agents/AGENTS.md",
+    "phrase": "If the loop guard denies a command, stop. Do not retry it or work around it."
+  }
+]

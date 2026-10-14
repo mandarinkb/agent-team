@@ -1,0 +1,4 @@
+# Task records stay local by default. Remove this file to commit them for an auditable trail.
+*
+!.gitignore
+!README.md
