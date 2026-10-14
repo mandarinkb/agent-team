@@ -1,0 +1,6 @@
+{
+  "compare_headers": ["content-type", "cache-control"],
+  "ignore_paths": ["$.meta.request_id", "$.meta.generated_at"],
+  "max_diffs": 20,
+  "timeout": 10
+}

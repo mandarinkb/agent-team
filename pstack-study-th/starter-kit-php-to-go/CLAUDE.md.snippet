@@ -1,0 +1,12 @@
+## PHP to Go migration rules
+
+Add this section to the project's CLAUDE.md. Each rule here is pinned by `rules.json`, so `python3 scripts/check_rules.py` fails if an edit drops one.
+
+- Port one endpoint per run with the project playbook `.agents/playbooks/php-to-go-endpoint.md`.
+- The PHP endpoint stays live until the operator flips the route.
+- Record the PHP baseline before writing any Go code for the endpoint.
+- Parity exit 3 is inconclusive, never a pass.
+- Never edit a recorded baseline to make a diff disappear.
+- Every ignored response path needs a written reason in the endpoint brief.
+- Use synthetic accounts for recording. Never record real customer data.
+- Initialize Go slices so an empty list encodes as `[]`, not `null`.

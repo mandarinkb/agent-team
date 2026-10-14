@@ -1,0 +1,11 @@
+[
+  {"source": "kit: one endpoint per run", "file": "CLAUDE.md.snippet", "phrase": "Port one endpoint per run with the project playbook"},
+  {"source": "kit: strangler migration, no early PHP removal", "file": "CLAUDE.md.snippet", "phrase": "The PHP endpoint stays live until the operator flips the route."},
+  {"source": "kit: pin before porting", "file": "CLAUDE.md.snippet", "phrase": "Record the PHP baseline before writing any Go code"},
+  {"source": "kit: unknown is not a pass", "file": "CLAUDE.md.snippet", "phrase": "Parity exit 3 is inconclusive, never a pass."},
+  {"source": "kit: baseline is the spec", "file": "CLAUDE.md.snippet", "phrase": "Never edit a recorded baseline to make a diff disappear."},
+  {"source": "kit: no silent ignores", "file": "CLAUDE.md.snippet", "phrase": "Every ignored response path needs a written reason"},
+  {"source": "kit: no customer data in fixtures", "file": "CLAUDE.md.snippet", "phrase": "Never record real customer data."},
+  {"source": "kit: playbook keeps PHP live", "file": ".agents/playbooks/php-to-go-endpoint.md", "phrase": "Do not delete, redirect, or disable the PHP endpoint."},
+  {"source": "kit: playbook treats exit 3 as inconclusive", "file": ".agents/playbooks/php-to-go-endpoint.md", "phrase": "Exit 3 means a case was unreachable, which is INCONCLUSIVE, not a pass."}
+]

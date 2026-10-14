@@ -1,0 +1,6 @@
+{"id": "list-happy", "method": "GET", "path": "/api/orders?user_id=1001", "headers": {"Authorization": "Bearer ${PARITY_TOKEN}"}}
+{"id": "list-empty", "method": "GET", "path": "/api/orders?user_id=1002", "headers": {"Authorization": "Bearer ${PARITY_TOKEN}"}}
+{"id": "get-not-found", "method": "GET", "path": "/api/orders/999999", "headers": {"Authorization": "Bearer ${PARITY_TOKEN}"}}
+{"id": "get-no-auth", "method": "GET", "path": "/api/orders/1"}
+{"id": "create-invalid", "method": "POST", "path": "/api/orders", "headers": {"Authorization": "Bearer ${PARITY_TOKEN}"}, "body": {"items": []}}
+{"id": "list-array-param", "method": "GET", "path": "/api/orders?user_id=1001&status[]=paid&status[]=shipped", "headers": {"Authorization": "Bearer ${PARITY_TOKEN}"}}
