@@ -1,0 +1,20 @@
+# Project
+
+Replace every `<...>` below with this project's real commands and paths. Every teammate reads this file.
+
+## How to run
+- <service>: `<start command>` → <local URL>
+- Test data: `<seed command>`
+
+## Commands
+- Build: `<command>`
+- Test: `<command>`
+- Lint: `<command>`
+
+## Layout
+- <area>: `<path>`
+
+## Conventions
+- <convention>
+
+@.agents/AGENTS.md
