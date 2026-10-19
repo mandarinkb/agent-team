@@ -1,0 +1,8 @@
+{
+  "profile": "balanced",
+  "profiles": {
+    "quality":  {"analyst": "opus",   "backend": "opus",   "frontend": "opus",   "spec-reviewer": "opus",   "qa": "opus", "git": "sonnet"},
+    "balanced": {"analyst": "opus",   "backend": "sonnet", "frontend": "sonnet", "spec-reviewer": "opus",   "qa": "opus", "git": "sonnet"},
+    "economy":  {"analyst": "sonnet", "backend": "sonnet", "frontend": "sonnet", "spec-reviewer": "sonnet", "qa": "opus", "git": "haiku"}
+  }
+}

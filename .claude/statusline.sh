@@ -1,5 +1,6 @@
 #!/bin/bash
 input=$(cat)
+echo "$input" | python3 "${CLAUDE_PROJECT_DIR:-.}/.agents/scripts/hooks/record_limits.py" 2>/dev/null
 
 MODEL=$(echo "$input" | jq -r '.model.display_name')
 DIR=$(echo "$input" | jq -r '.workspace.current_dir')
