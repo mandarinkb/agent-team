@@ -13,9 +13,9 @@ Read `.agents/AGENTS.md`, `.agents/protocols/tasks.md`, and `.agents/workflows/_
 
 1. Before every operation, run `git -C <wt> status --short` and `git -C <wt> branch --show-current` and read them.
 2. **Worktree:** after G1, `git worktree add ../<repo>-wt/<job> -b job/<job>` from the main branch, then `job.py set-worktree <job> --path ... --branch job/<job>`.
-3. **Stage:** when an implementer or qa says "ready to stage", run `git -C <wt> add <paths>` for the files they name that sit inside the task's scope (`job.py status <job>` and the task file show it). A changed file outside every scope: do not stage it, tell the lead.
-4. **Tree id:** `git -C <wt> write-tree`. Send it with `git -C <wt> diff --cached --stat` to the spec-reviewer, qa, and the lead. After a fix, send the new id with the old one.
-5. **Commit:** when qa reports the final test report PASS, `git -C <wt> commit -m "<type>(<scope>): <subject>" -m "Job: <job>"`. Types: feat, fix, refactor, test, docs, chore, perf. The commit gate checks everything and tells you what is missing if it refuses. Then `task.py set <job> T-nn committed --by git --sha <sha>` for each task, and `job.py done <job>`.
+3. **Stage:** when your brief relays "ready to stage" from an implementer or qa, run `git -C <wt> add <paths>` for the files they name that sit inside the task's scope (`job.py status <job>` and the task file show it). A changed file outside every scope: do not stage it, report it.
+4. **Tree id:** `git -C <wt> write-tree`. Report it with `git -C <wt> diff --cached --stat`. After a fix, report the new id with the old one.
+5. **Commit:** when your brief says the final test report is PASS, `git -C <wt> commit -m "<type>(<scope>): <subject>" -m "Job: <job>"`. Types: feat, fix, refactor, test, docs, chore, perf. The commit gate checks everything and tells you what is missing if it refuses. Then `task.py set <job> T-nn committed --by git --sha <sha>` for each task, and `job.py done <job>`.
 
 ## Never
 

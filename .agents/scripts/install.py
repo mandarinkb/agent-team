@@ -18,9 +18,6 @@ HOOKS = {
     "UserPromptSubmit": [(None, "log_user_prompt.py")],
     "PreToolUse": [("Bash", "guard_git.py"), ("Bash|Write|Edit|MultiEdit|NotebookEdit", "guard_task.py"),
                    ("mcp__.*", "guard_sql.py"), ("Bash", "loop_guard.py"), ("Bash", "limit_guard.py"), (None, "probe_identity.py")],
-    "TaskCreated": [(None, "probe_identity.py")],
-    "TaskCompleted": [(None, "probe_identity.py")],
-    "TeammateIdle": [(None, "probe_identity.py")],
 }
 TIMEOUTS = {"guard_git.py": 600}
 DENY = ["Bash(git push)", "Bash(git push *)", "Bash(git reset --hard*)", "Bash(git clean -f*)",
@@ -49,7 +46,7 @@ def settings_block():
             if matcher:
                 entry["matcher"] = matcher
             hooks.setdefault(event, []).append(entry)
-    return {"env": {"CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"}, "permissions": {"deny": DENY}, "hooks": hooks}
+    return {"permissions": {"deny": DENY}, "hooks": hooks}
 
 
 def main(argv):

@@ -2,7 +2,7 @@
 
 ## Agent team
 
-This section applies when the lead runs a job with teammates. The words used here are defined in `GLOSSARY.md`. Read `.agents/protocols/zero-trust.md` once before your first job.
+This section applies when the lead runs a job with teammates. Teammates are subagents: the lead spawns one per step with the Agent tool, and each ends after its report. The words used here are defined in `GLOSSARY.md`. Read `.agents/protocols/zero-trust.md` once before your first job.
 
 ### The user
 
@@ -48,9 +48,9 @@ A new session picks a job up with `python3 .agents/scripts/job.py resume <job>`,
 - The lead asks the user with the options, recommended first. The user may pick one or write their own answer. The lead records it with `job.py decide`, then relays the user's exact words.
 - Details: `.agents/protocols/decisions.md`.
 
-### Talking to each other
+### Handoffs
 
-Teammates message each other directly for handoffs, contracts, and fix tasks. Status, blockers, and decisions go to the lead. See `.agents/protocols/messaging.md`.
+Teammates never message each other. Each one reports to the lead, and the lead spawns the next step with a brief that names the ids and paths it needs. Status, blockers, and decisions go in the same report. See `.agents/protocols/messaging.md`.
 
 ### Evidence
 

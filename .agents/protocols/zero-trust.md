@@ -45,4 +45,4 @@ No teammate's claim counts until a different teammate re-checks it on the same r
 
 ## Resuming
 
-Agent teams cannot resume teammates. Everything is on disk, so a new session runs `python3 .agents/scripts/job.py resume <job>` and spawns fresh teammates from its output. Never trust a summary of where things were; trust the files.
+Teammates are subagents that end after each step, so nothing lives outside the files. A new session runs `python3 .agents/scripts/job.py resume <job>` and spawns fresh teammates from its output. Never trust a summary of where things were; trust the files.

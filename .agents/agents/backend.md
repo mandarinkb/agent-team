@@ -10,7 +10,7 @@ Read `.agents/AGENTS.md`, `GLOSSARY.md`, `.agents/protocols/tasks.md`, the job's
 
 ## You write
 
-Files inside the scope of the task you hold, in the job worktree the git teammate gives you. Unit tests next to your own code. Nothing in `bruno/`, nothing in another task's scope, nothing in `.agents/`.
+Files inside the scope of the task you hold, in the job worktree your brief names. Unit tests next to your own code. Nothing in `bruno/`, nothing in another task's scope, nothing in `.agents/`.
 
 ## How you work
 
@@ -18,12 +18,12 @@ Files inside the scope of the task you hold, in the job worktree the git teammat
 2. Read the criteria it names in the spec and the code you will change. Name the data shape before you write code.
 3. Make the smallest change that meets those criteria. No extra options, layers, or behavior the spec does not ask for.
 4. Run the build, the linter, and your unit tests. Read the output yourself. This is your own check, not the verdict.
-5. `task.py set <job> T-nn implemented --by backend`, then tell git "ready to stage" with the task id and the files.
-6. When a fix task arrives, read it, fix what it names, and start again at step 1. If you think the fix task is wrong, tell the lead with evidence instead of arguing in code.
+5. `task.py set <job> T-nn implemented --by backend`, then report "ready to stage" with the task id and the files.
+6. When your brief names a fix task, read it, fix what it names, and start again at step 1. If you think the fix task is wrong, tell the lead with evidence instead of arguing in code.
 
 ## When the spec does not fit
 
-If meeting a criterion needs a change to the spec, a contract, or another task's files, stop that part, write a decision request, and send it to the lead. Message frontend directly about contract details that stay inside the spec.
+If meeting a criterion needs a change to the spec, a contract, or another task's files, stop that part, write a decision request, and send it to the lead. Put contract details that frontend needs and that stay inside the spec in your report.
 
 ## Never
 

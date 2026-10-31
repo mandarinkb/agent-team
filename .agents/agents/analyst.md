@@ -18,7 +18,7 @@ Read `.agents/AGENTS.md`, `GLOSSARY.md`, the workflow for the job's kind, and `g
 - Every conclusion rests on something you ran: a reproduction, a log line, a SELECT, a reverted line. Reading code alone is inferred, and you say so.
 - For a bug, start from qa's reproduction. Keep a list of candidate causes and eliminate them with checks, cutting the space in half each round.
 - For a migration, list every route, caller, side effect, table, and column the unit touches, and find out why odd behaviors exist (git log, blame) before calling them bugs.
-- When more than one approach meets the need, ask the implementers what each costs and write a decision request. Never pick.
+- When more than one approach meets the need, write a decision request with the options and say in your report which costs the lead should get from the implementers. Never pick.
 - Database: one SELECT per call, test database only.
 
 ## Report to the lead

@@ -1,39 +1,54 @@
-# Messaging
+# Handoffs
 
-## Direct between teammates
+Every teammate is a subagent. The lead spawns it for one step with a brief, it does that step, reports to the lead, and ends. Teammates never message each other. Every handoff goes through the lead and through files on disk, as in pstack ("keep sibling communication upward only").
 
-| From | To | For |
+## Spawning
+
+- Use the Agent tool with `subagent_type` set to the role. Leave `name` unset.
+- One spawn per step. A fix round is a fresh spawn that reads the fix task. Never rely on what an earlier spawn remembers.
+- Steps that do not depend on each other run in parallel with `run_in_background: true`: qa writing the Bruno collection while the implementers code, implementers of tasks with separate scopes, competing analysts.
+- Wait for a report before spawning a step that needs it. Never write a report yourself or guess one that has not arrived.
+
+## The brief
+
+The brief is the product. A fresh subagent knows only what it says and what the files say.
+
+```
+Role: spec-reviewer   Job: J-20261017-orders   Task: T-02   Round: 2
+Step: _run.md step 5
+Worktree: ../app-wt/J-20261017-orders
+Tree: 4b825dc6...  (previous: 9f1e2a07...)
+Read: spec.md, tasks/T-02.md, fixes/F-03.md
+Report: verdict, review path, fix task paths
+```
+
+Name the job, task, round, and the workflow step. Give paths and ids, not pasted content. Include the user's exact words for any decision the step depends on.
+
+## What each report carries to the next step
+
+| Report from | Carries | The lead spawns next |
 |---|---|---|
-| analyst | backend, frontend | root cause, files involved, the contract |
-| backend | frontend | API contract details inside the approved spec |
-| backend, frontend | git | "ready to stage" with the task id and the files |
-| qa | git | "ready to stage" for files in `bruno/` |
-| git | spec-reviewer, qa, lead | the tree id, the worktree, `git diff --cached --stat` |
-| spec-reviewer, qa | backend, frontend | a fix task path |
-| qa | analyst | a reproduction that contradicts the root cause |
+| qa (reproduction) | the command, failing output, commit | analyst |
+| analyst | `investigation.md`, decision requests | analyst (to refute a rival), or the lead writes the spec |
+| backend, frontend | "ready to stage", task id, files | git |
+| qa (Bruno written) | "ready to stage" for `bruno/<job>/` | git |
+| git | tree id, worktree, `git diff --cached --stat` | spec-reviewer, then qa |
+| spec-reviewer, qa | verdict, fix task paths | the owner, with the fix task |
+| qa | a reproduction that contradicts the root cause | analyst |
 
-Everything else goes to the lead: status, blockers, decision requests, scope questions.
-
-## Shape
-
-```
-[J-20261017-orders T-02] fix: fixes/F-03.md
-Revision: 4b825dc6...  AC-3 fails: status 200, spec says 422
-Run: bru run orders --env local
-```
-
-Start with the job and task, then the kind (handoff, fix, ready to stage, tree, blocked, decision). Point at files instead of pasting output.
+Status, blockers, decision requests, and scope questions also go to the lead in the report.
 
 ## Limits
 
-- Never ask another teammate to write outside its scope. Ask the lead.
+- Never ask in a report for another teammate to write outside its scope. Ask the lead.
 - Agreement between teammates is input to a decision, never the decision.
-- When two teammates disagree on a fact, each runs the check that would prove the other wrong.
+- When two teammates disagree on a fact, the lead spawns each to run the check that would prove the other wrong.
 
-## Report to the lead when your part ends
+## Report to the lead when your step ends
 
 - **Status:** `PASS`, `ISSUES`, or `BLOCKED`.
 - **What:** one line per file or finding.
 - **Evidence:** commands and decisive output, labeled measured, inferred, or guess.
 - **Not checked:** what and why.
 - **Decisions:** paths of any requests.
+- **Next:** the handoff from the table above, with the ids and paths it needs.

@@ -13,8 +13,12 @@ The main session. It grills the user, writes the spec and tasks, routes work, an
 _Avoid_: Team lead, coordinator, orchestrator
 
 **Teammate**:
-An agent in the team that holds one role and works only inside its task's scope.
-_Avoid_: Worker, subagent (a subagent is a different mechanism)
+A subagent the Lead spawns for one step of a Job. It holds one role, works only inside its task's scope, reports to the Lead, and ends.
+_Avoid_: Worker, Agent Teams teammate (the team does not use Agent Teams)
+
+**Brief**:
+The prompt the Lead spawns a Teammate with: the job, task, round, workflow step, and the ids and paths the step needs.
+_Avoid_: Message, handoff note
 
 **Implementer**:
 The teammate that writes the code for a task: backend or frontend.

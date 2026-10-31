@@ -16,7 +16,7 @@
 6. [สถานะของ Task และใครเปลี่ยนได้](#6-สถานะของ-task-และใครเปลี่ยนได้)
 7. [ไฟล์ของแต่ละ Job](#7-ไฟล์ของแต่ละ-job)
 8. [กลไกที่บังคับด้วยโค้ด](#8-กลไกที่บังคับด้วยโค้ด)
-9. [การตัดสินใจและการคุยกันระหว่าง teammate](#9-การตัดสินใจและการคุยกันระหว่าง-teammate)
+9. [การตัดสินใจและการส่งต่องาน](#9-การตัดสินใจและการส่งต่องาน)
 10. [ติดตั้ง](#10-ติดตั้ง)
 11. [วิธีเขียน prompt สั่งงาน](#11-วิธีเขียน-prompt-สั่งงาน)
 12. [คำสั่งอ้างอิง](#12-คำสั่งอ้างอิง)
@@ -40,7 +40,7 @@
                   analyst  backend/  spec-reviewer   qa      git
                   สืบสวน   frontend  ตรวจกับ spec   ทดสอบ   stage/commit
                            เขียนโค้ด                Bruno+DB  (ห้าม push)
-                 └──────── teammate คุยกันเองได้ แต่ตัดสินใจแทนคุณไม่ได้ ────────┘
+                 └── teammate เป็น subagent: ทำทีละขั้น รายงาน lead แล้วจบ ──┘
 ```
 
 **หน้าที่ของคุณมีแค่ 4 อย่าง**
@@ -51,6 +51,8 @@
 | Gate G1 | อ่าน `spec.md` กับรายการ task แล้วพิมพ์อนุมัติ |
 | ระหว่างทาง | เลือกตัวเลือกที่ทีมเสนอ หรือพิมพ์คำตอบที่ต้องการเอง |
 | จบงาน | อ่าน `test-report.md` และดู commit บน branch `job/<job-id>` |
+
+**teammate ทุกตัวเป็น subagent** (แบบเดียวกับ pstack) lead spawn ทีละขั้นด้วย Agent tool พร้อม brief ที่ระบุ id และ path ที่ขั้นนั้นต้องใช้ teammate ทำขั้นนั้นจบแล้วรายงานกลับ lead ไม่มีตัวไหนค้างอยู่หรือคุยกันเอง จึงใช้ token น้อยกว่า Agent Teams และไม่ต้องพึ่งฟีเจอร์ experimental
 
 ส่วนที่เหลือทีมทำเองทั้งหมด ได้แก่ เขียนโค้ด ตรวจกับ spec สร้างและรัน Bruno ตรวจ DB ทีละ column แก้จนผ่าน และ commit **ไม่มีใคร push** การ push เป็นหน้าที่ของคุณเสมอ
 
@@ -95,7 +97,7 @@
 │   ├── CLAUDE.md                 @../.agents/AGENTS.md
 │   ├── agents  -> ../.agents/agents      Claude Code อ่านนิยาม teammate จากที่นี่
 │   ├── skills  -> ../.agents/skills      grilling, domain-modeling, grill-with-docs
-│   ├── settings.json             hook, deny rule, เปิด Agent Teams
+│   ├── settings.json             hook, deny rule
 │   └── statusline.sh             ส่งข้อมูล usage limit ให้ record_limits.py
 └── .agents/
     ├── AGENTS.md                 กฎกลางที่ทุกตัวโหลด (สั้นโดยตั้งใจ)
@@ -195,8 +197,8 @@
 - **git** สร้าง worktree แยกบน branch `job/<id>`
 - **qa** เขียน Bruno collection **จาก spec ไม่ใช่จากโค้ด** ให้เสร็จก่อน review รอบแรก ทุก request ต้องใส่ AC ใน `docs { AC-1 }` ต้อง assert body หรือ header (ไม่ใช่แค่ status) และ secret ต้องมาจาก `{{process.env.X}}`
 - **backend/frontend** หยิบ task (`in_progress`) แก้เฉพาะไฟล์ใน scope รัน build/unit test ของตัวเอง แล้ว mark `implemented`
-- **git** stage เฉพาะไฟล์ใน scope แล้วส่ง tree id ให้ทุกคน
-- **spec-reviewer** ตรวจทีละ AC พร้อม `file:line` และตรวจ Bruno collection ว่าครอบคลุม AC จริง ถ้าไม่ตรง เขียน `fixes/F-n.md` ส่งให้ implementer
+- **git** stage เฉพาะไฟล์ใน scope แล้วรายงาน tree id ให้ lead ซึ่งส่งต่อใน brief ของขั้นถัดไป
+- **spec-reviewer** ตรวจทีละ AC พร้อม `file:line` และตรวจ Bruno collection ว่าครอบคลุม AC จริง ถ้าไม่ตรง เขียน `fixes/F-n.md` แล้ว lead spawn implementer ตัวใหม่พร้อม fix task นั้น
 - **qa** รัน Bruno (`--reporter-json`), ตรวจ DB ทีละ column ตาม Data contract, รัน `redact.py` แล้ว mark `verified` ถ้าไม่ผ่าน เขียน fix task
 
 **การแก้วน (Round):** fix task หนึ่งครั้งเท่ากับหนึ่งรอบ task หนึ่งตัวแก้ได้ไม่เกิน 3 รอบ รอบที่ 4 ต้องให้คุณตัดสิน ถ้าล้มด้วยสาเหตุเดิม 2 รอบติดกัน ให้หยุดและส่งเป็นการตัดสินใจทันที
@@ -279,7 +281,7 @@ todo ──► in_progress ──► implemented ──► spec_ok ──► ver
 
 ---
 
-## 9. การตัดสินใจและการคุยกันระหว่าง teammate
+## 9. การตัดสินใจและการส่งต่องาน
 
 **เรื่องที่ต้องให้คุณตัดสินเสมอ:**
 - เลือกระหว่าง design ที่ใช้ได้ทั้งคู่
@@ -291,11 +293,11 @@ todo ──► in_progress ──► implemented ──► spec_ok ──► ver
 - ทำรอบที่ 4
 - push, merge หรือ deploy
 
-**วิธีที่ teammate ส่งเรื่องมา:** teammate เขียน `decisions/D-n.md` จาก template ซึ่งต้องมีตัวเลือกอย่างน้อย 2 ตัว แต่ละตัวมีข้อดี ข้อเสีย ต้นทุน และคำแนะนำ จากนั้น lead ถามคุณ โดยตัวเลือกที่แนะนำอยู่บนสุดและมีป้าย `(แนะนำ)` **คุณเลือกตัวเลือกหรือพิมพ์คำตอบเองก็ได้** แล้ว lead บันทึกด้วย `job.py decide` (ตรวจคำพูดกับ log เหมือนตอนอนุมัติ) และส่งคำพูดของคุณต่อให้ teammate ตรงตัว
+**วิธีที่ teammate ส่งเรื่องมา:** teammate เขียน `decisions/D-n.md` จาก template ซึ่งต้องมีตัวเลือกอย่างน้อย 2 ตัว แต่ละตัวมีข้อดี ข้อเสีย ต้นทุน และคำแนะนำ จากนั้น lead ถามคุณ โดยตัวเลือกที่แนะนำอยู่บนสุดและมีป้าย `(แนะนำ)` **คุณเลือกตัวเลือกหรือพิมพ์คำตอบเองก็ได้** แล้ว lead บันทึกด้วย `job.py decide` (ตรวจคำพูดกับ log เหมือนตอนอนุมัติ) และใส่คำพูดของคุณลงใน brief ของ teammate ที่ทำงานต่อ ตรงตัว
 
 **ไม่มีค่าเริ่มต้นและไม่มี timeout:** ถ้าคุณยังไม่ตอบ งานที่รอคำตอบจะหยุด แต่งานอื่นที่ไม่เกี่ยวข้องเดินต่อ
 
-**teammate คุยกันเองได้** เช่น analyst ส่ง root cause ให้ backend, qa ส่ง fix task ให้ backend และ git ส่ง tree id ให้ทุกคน แต่ความเห็นที่ตรงกันของ teammate ไม่นับเป็นการตัดสินใจ รายละเอียดอยู่ใน [`protocols/messaging.md`](protocols/messaging.md)
+**teammate ไม่คุยกันเอง** ทุกการส่งต่อผ่าน lead และไฟล์ เช่น git รายงาน tree id แล้ว lead spawn spec-reviewer พร้อม tree id นั้น หรือ qa เขียน fix task แล้ว lead spawn backend ตัวใหม่ให้อ่าน fix task ขั้นที่ไม่ขึ้นต่อกันรันขนานกันแบบ background ได้ ความเห็นที่ตรงกันของ teammate ไม่นับเป็นการตัดสินใจ รายละเอียดอยู่ใน [`protocols/messaging.md`](protocols/messaging.md)
 
 ---
 
@@ -305,7 +307,7 @@ todo ──► in_progress ──► implemented ──► spec_ok ──► ver
 
 | สิ่งที่ต้องมี | ใช้ทำอะไร |
 |---|---|
-| Claude Code ที่รองรับ Agent Teams | รันทีม (`settings.json` เปิด `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` ให้) |
+| Claude Code | รันทีมด้วย subagent (ไม่ต้องเปิด Agent Teams) |
 | Python 3.9+ และ git | script และ hook ทั้งหมด (ใช้แค่ standard library) |
 | `jq` | statusline |
 | Bruno CLI | `npm i -g @usebruno/cli` |
@@ -348,11 +350,11 @@ python3 /path/to/agent-team/.agents/scripts/install.py /path/to/your-project
 
 ### 10.4 ทดสอบครั้งแรก (ทำก่อนใช้งานจริง)
 
-gate ที่ตรวจบทบาทอาศัยค่า `agent_type` ที่ Claude Code ส่งให้ hook ซึ่งยังไม่ได้ยืนยันว่า teammate ส่งค่านี้มา
+gate ที่ตรวจบทบาทอาศัยค่า `agent_type` ที่ Claude Code ส่งให้ hook ซึ่งยังไม่ได้ยืนยันว่า subagent ส่งค่านี้มา
 
 1. เปิด Claude Code ด้วย `TEAM_PROBE=1 claude` ที่ root ของโปรเจกต์
-2. พิมพ์: `สร้างทีม backend, qa, git (ใช้ agent type ตามชื่อ) ให้แต่ละคนรัน git status หนึ่งครั้งแล้วจบ`
-3. ปิดทีม แล้วรัน `python3 .agents/scripts/hooks/probe_identity.py --report`
+2. พิมพ์: `spawn subagent backend, qa, git (ไม่ต้องตั้งชื่อ) ให้แต่ละตัวรัน git status หนึ่งครั้งแล้วจบ`
+3. รัน `python3 .agents/scripts/hooks/probe_identity.py --report`
 4. ถ้าได้ **PASS** ใช้งานได้ ถ้าได้ **FAIL** gate จะปฏิเสธขั้นตอนของ teammate ทั้งหมด อย่าตั้ง `TEAM_IDENTITY=lenient` ถ้ายังไม่ได้ตัดสินใจรับความเสี่ยงนั้น
 
 ตรวจตัวชุดเครื่องมือเองได้ด้วย `python3 .agents/tests/test_team.py`
@@ -492,13 +494,14 @@ Q1 ตามแนะนำ, Q2 เอาแบบ ข, Q3 ไม่ต้อง
 ## 13. ข้อจำกัดและการแก้ปัญหา
 
 **ข้อจำกัดที่รู้อยู่**
-- **ยังไม่ได้ทดสอบกับ Agent Teams จริง** ให้ทำการทดสอบในหัวข้อ 10.4 ก่อน
+- **ยังไม่ได้ทดสอบกับ subagent จริง** ให้ทำการทดสอบในหัวข้อ 10.4 ก่อน
+- **lead เป็นตัวกลางทุกการส่งต่อ** context ของ lead จึงโตตามจำนวนขั้น brief และรายงานควรอ้าง path แทนการแปะเนื้อหา
 - **การกรองข้อความใน log ผู้ใช้:** `UserPromptSubmit` ทำงานทั้งตอนคุณพิมพ์และตอนระบบเริ่ม turn เอง hook ข้าม turn ของระบบตามรูปแบบ tag ที่ผู้เขียนอนุมานเอา ยังไม่ได้วัดจริง
 - **shell writes:** agent ที่ตั้งใจเลี่ยงยังเขียนไฟล์ผ่าน shell บางรูปแบบได้ แต่ commit gate ตรวจหลักฐานใหม่จาก git และไฟล์ทั้งหมด การปลอมสถานะอย่างเดียวจึงไม่พอให้ commit ผ่าน
 - **Bruno ตอน commit** ทดสอบ service ที่ env ชี้ไป ตอน commit service ต้องรันโค้ดชุดสุดท้ายอยู่ gate พิสูจน์ข้อนี้ไม่ได้
 - **ตรวจ secret ด้วยรูปแบบ (pattern)** secret ที่หน้าตาแปลกไปจากรูปแบบที่รู้จักอาจหลุดได้
 - **limit guard:** ข้อมูลอาจช้ากว่าความจริงไม่กี่นาที และไม่ทำงานถ้าใช้ API key
-- **ต้นทุน:** ทีม 5–6 ตัวที่ใช้ opus 3 ตัวใช้ token มาก ดูได้จาก `/usage`
+- **ต้นทุน:** แต่ละขั้นเป็น subagent ที่จบแล้วหายไป ไม่มีตัวที่ค้างอยู่ แต่บทบาทที่ใช้ opus ยังใช้ token มาก ดูได้จาก `/usage`
 
 **เมื่อเจอข้อความปฏิเสธ**
 

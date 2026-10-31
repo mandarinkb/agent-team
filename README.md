@@ -1,6 +1,6 @@
 # agent-team
 
-ทีม AI teammate แบบ Zero Trust สำหรับงาน migration, เพิ่ม feature และแก้บั๊กบน Claude Code Agent Teams
+ทีม AI teammate แบบ Zero Trust สำหรับงาน migration, เพิ่ม feature และแก้บั๊กบน Claude Code โดยใช้ subagent ทีละขั้น (แบบเดียวกับ pstack)
 
 - **คู่มือฉบับเต็ม (ภาษาไทย):** [`.agents/README-TH.md`](.agents/README-TH.md) ครอบคลุม workflow, หลักการ, การติดตั้ง และตัวอย่าง prompt
 - **ศัพท์ของทีม:** [`GLOSSARY.md`](GLOSSARY.md)

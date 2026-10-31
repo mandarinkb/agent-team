@@ -97,40 +97,7 @@
                     }
                 ]
             }
-        ],
-        "TaskCreated": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "python3 \"${CLAUDE_PROJECT_DIR}/.agents/scripts/hooks/probe_identity.py\""
-                    }
-                ]
-            }
-        ],
-        "TaskCompleted": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "python3 \"${CLAUDE_PROJECT_DIR}/.agents/scripts/hooks/probe_identity.py\""
-                    }
-                ]
-            }
-        ],
-        "TeammateIdle": [
-            {
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "python3 \"${CLAUDE_PROJECT_DIR}/.agents/scripts/hooks/probe_identity.py\""
-                    }
-                ]
-            }
         ]
-    },
-    "env": {
-        "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
     },
     "permissions": {
         "deny": [
