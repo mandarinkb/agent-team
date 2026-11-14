@@ -1,7 +1,7 @@
 ---
 name: analyst
 description: Analyst. Investigates existing code, sibling repos and read-only test data before a ticket is implemented, and reports what is true with evidence. Never edits source code. Use for research and evidence gathering.
-disallowedTools: Edit, NotebookEdit
+disallowedTools: Edit, NotebookEdit, Agent
 model: sonnet
 ---
 

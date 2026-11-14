@@ -92,8 +92,70 @@
 | `.claude/agents/backend.md` | หัวข้อใหม่ "When the environment fails" อ้างไปที่ตารางเดียวกัน และไม่นับเป็นรอบ | |
 | `.agents/templates/evidence.md` | รายการไฟล์รวม `log.tsv` และ `progress.md` | |
 
+## เพิ่มภายหลัง: ห้าม subagent spawn ต่อ และ brief เป็นไฟล์ที่ตรวจได้ (นำมาจาก pstack)
+
+**ผู้ใช้อนุมัติ:** "ทำข้อ 1 กับข้อ 4 ก่อนครับ" ครอบคลุมการเปลี่ยน `disallowedTools` ของ `analyst` และ `spec-reviewer` ที่ HANDOVER ข้อ 5 บอกให้ถามก่อน
+
+### ข้อ 1: ห้าม subagent spawn subagent ต่อ
+
+**เหตุผล:** เอกสาร Claude Code บอกว่าโดยค่าเริ่มต้น subagent spawn ลูกต่อได้ลึก 3 ชั้น และไม่มี role ไหนในชุดนี้ตัด `Agent` ออก แต่ workflow ตั้งอยู่บนกฎ "ทุกการส่งต่อผ่าน lead" ถ้า subagent spawn ลูกเอง lead จะมองไม่เห็นลูก, `log.tsv` ไม่มีบันทึก, ลูกไม่ได้รับ brief ของพ่อ และ token บานโดยไม่มีใครเห็น pstack ใช้หลัก "บังคับด้วย tool ไม่ใช่ด้วย prompt" จึงตัดที่ tool
+
+| ไฟล์ | ก่อน | หลัง | เหตุผล |
+|---|---|---|---|
+| `.claude/agents/analyst.md` | `disallowedTools: Edit, NotebookEdit` | `disallowedTools: Edit, NotebookEdit, Agent` | เพิ่มอย่างเดียว ของเดิมยังอยู่ |
+| `.claude/agents/spec-reviewer.md` | `disallowedTools: Edit, NotebookEdit` | `disallowedTools: Edit, NotebookEdit, Agent` | เพิ่มอย่างเดียว ของเดิมยังอยู่ |
+| `.claude/agents/backend.md` | ไม่มี `disallowedTools` | `disallowedTools: Agent` | เพิ่ม key ใหม่ ไม่ได้ลบหรือเปลี่ยนชื่อ key เดิม |
+| `.claude/agents/qa.md` | ไม่มี `disallowedTools` | `disallowedTools: Agent` | เพิ่ม key ใหม่ ไม่ได้ลบหรือเปลี่ยนชื่อ key เดิม |
+| `.agents/workflows/ticket.md` กลไก | | ข้อ "subagent spawn ต่อไม่ได้" ถ้างานใหญ่เกินไป ให้ subagent เสนอวิธีแบ่งงานในรายงาน แล้ว lead เป็นคน spawn | อธิบายกฎและทางออก |
+| `.agents/templates/brief.md` ท้ายไฟล์ | "ห้ามส่งงานต่อให้ role อื่นเอง" | เพิ่ม "ห้าม spawn subagent ต่อ ถ้างานใหญ่เกินไปให้เสนอวิธีแบ่งในรายงาน" | |
+| `.agents/README.md` กติกา | | เพิ่มบรรทัดเรื่อง `Agent` ใน `disallowedTools` | |
+
+### ข้อ 4: brief เป็นไฟล์ และห้าม spawn ถ้ายังกรอกไม่ครบ
+
+**เหตุผล:** จาก Orchestrate ของ pstack "A field you cannot fill is a unit you have not scoped yet. Missing fields are a refuse-to-spawn condition." เดิม brief อยู่ใน prompt เท่านั้น จึงไม่มีอะไรตรวจได้ว่ากรอกครบ และ brief หายไปพร้อม transcript ทำให้ retro และการทำต่อเมื่อ session หลุดไม่เห็นว่าแต่ละขั้นได้รับคำสั่งอะไร
+
+**เรื่อง token (ตีความ ยังไม่ได้วัด):** context ของ lead แทบไม่เปลี่ยน เพราะ lead ยังต้องเขียนเนื้อหา brief เองเหมือนเดิม แค่ย้ายจาก prompt ไปเป็นไฟล์ ส่วน subagent อ่าน brief จากไฟล์แทนจาก prompt ซึ่งปริมาณเท่ากัน ประโยชน์ของข้อนี้จึงอยู่ที่การตรวจได้และบันทึกย้อนหลัง ไม่ใช่การประหยัด token
+
+| ไฟล์ | ก่อน | หลัง | เหตุผล |
+|---|---|---|---|
+| `.agents/workflows/ticket.md` กลไก | brief อยู่ใน prompt | lead เขียน brief ลง `reviews/<ticket>/briefs/<NN>-<role>-step<ขั้น>.md`, รัน `grep -c '<fill:'` ต้องได้ `0` ถ้าไม่ใช่ห้าม spawn, prompt ของ Agent tool เป็น "อ่าน brief ที่ <path> แล้วทำตาม", ห้ามแก้ brief หลัง spawn, ห้ามมีค่า secret | ตรวจได้ด้วยคำสั่งแทนความจำของ lead และมีบันทึกถาวร |
+| `ticket.md` `log.tsv` | spawn แต่ละขั้นเขียนแถว | แถว spawn ใช้ path ของ brief เป็น `evidence` | retro ตามจาก log ไปหา brief ได้ |
+| `ticket.md` subagent ที่ติดหรือวน | spawn ตัวใหม่พร้อม brief เดิม + คำสั่งเพิ่ม | เขียน brief ไฟล์ใหม่ที่อ้าง brief เดิม + คำสั่งเพิ่ม + รายงานของตัวก่อน แล้วค่อย spawn | ตามกฎห้ามแก้ brief หลัง spawn |
+| `ticket.md` ทำต่อเมื่อ session หลุด ข้อ 4 | spawn ขั้นที่หายไปใหม่ | เขียน brief ไฟล์ใหม่ที่อ้าง brief ล่าสุดของขั้นนั้นใน `briefs/` แล้ว spawn | session ใหม่เห็นคำสั่งเดิมโดยไม่ต้องใช้ความจำ |
+| `ticket.md` ขั้น 7 เสนอ retro | retro อ่าน `log.tsv`, `progress.md` แล้ว transcript | เพิ่มให้เปิด brief ใน `briefs/` ก่อน transcript | |
+| `ticket.md` สิ่งที่ยังไม่ได้ติดตั้ง | กติกาบังคับด้วยข้อความเท่านั้น | ระบุว่ามีสองข้อที่บังคับด้วย tool หรือคำสั่งแล้ว | ให้ตรงกับของจริง |
+| `.agents/templates/brief.md` | | เพิ่ม HTML comment ท้ายไฟล์สำหรับ lead: ที่เก็บไฟล์, ตรวจก่อน spawn, ห้ามแก้หลัง spawn, ห้ามใส่ secret · ข้อความนี้ตั้งใจไม่มีคำว่า placeholder ของแบบฟอร์ม เพื่อให้ `grep` นับได้ `0` เมื่อกรอกครบ | |
+| `.agents/templates/evidence.md` | | เพิ่ม `briefs/` ในรายการไฟล์ | |
+| `.agents/README.md` กติกา | | เพิ่มบรรทัดเรื่อง brief เป็นไฟล์ | |
+
+**ตรวจแล้ว:** template มี placeholder 13 บรรทัด, แทนครบทุกช่องแล้ว `grep -c '<fill:'` ได้ `0`, เหลือช่อง "คำตัดสินของผู้ใช้" ว่างช่องเดียวได้ `1` (ทดสอบกับสำเนาใน scratchpad) · หัวไฟล์ role ทั้ง 4 ตัวยังมี `name`, `disallowedTools`, `model` และชื่อไฟล์ตรงกับ `name` · ยังไม่ได้เปิด Claude Code ในโฟลเดอร์นี้เพื่อรัน `/agents` และยังไม่ได้ลองรัน ticket จริง
+
+## เพิ่มภายหลัง: spec-reviewer เฉพาะ ticket เสี่ยง และ lead รันซ้ำ mutation 1 จุด
+
+**ผู้ใช้สั่ง:** "role pec-reviewer ลบออกเลยก้ได้ครับ" → ผมเสนอทางเลือก ผู้ใช้เลือก "ใช้เฉพาะ ticket เสี่ยง (Recommended)" → ดู diff แล้วตอบ "ยืนยันร่าง spec-reviewer เฉพาะ ticket เสี่ยง และบอกว่าจะเพิ่มกฎให้ lead รันซ้ำ mutation 1 จุดด้วย"
+
+**เป็นการผ่อนกติกา:** เดิมทุก ticket มี spec-reviewer ตรวจ ตอนนี้ ticket ปกติให้ lead ตรวจเอง ผู้ใช้ดู diff ก่อนบันทึกตาม HANDOVER ข้อ 5 แล้ว · หลัก "ผู้ตรวจ ≠ ผู้เขียน" ยังอยู่ เพราะ lead ไม่ได้เขียนโค้ด
+
+**ไม่ได้ลบ `spec-reviewer.md`:** HANDOVER ข้อ 7 ห้ามลบไฟล์ใน `MANIFEST.sha256` และ ticket เสี่ยงยังใช้ role นี้
+
+| ไฟล์ | เปลี่ยนอะไร |
+|---|---|
+| `.agents/workflows/ticket.md` | หัวข้อใหม่ "ระดับความเสี่ยงและผู้ตรวจโค้ด" (เกณฑ์ 6 ข้อ, ไม่แน่ใจให้ถือว่าเสี่ยง, เลื่อนเป็นเสี่ยงระหว่างทาง 3 กรณีและห้ามลดกลับ, ตารางเทียบ) · ขั้น 1 lead จัดระดับในแผน ผู้ใช้ยืนยัน · ขั้น 2/4/5/7 และกติกาประสานงานข้อ 5 ใช้คำว่า "ผู้ตรวจโค้ด" · ticket ปกติ lead เขียน `r<n>/lead-review.md` · lead รันซ้ำ mutation 1 จุดในสำเนานอก repo เก็บ output ที่ `r<n>/lead-mutation.log` ถ้า test ไม่แดงหรือตรวจไม่ได้ให้เลื่อนเป็นเสี่ยง |
+| `.agents/README.md` | แถว spec-reviewer และบรรทัด workflow |
+| `.agents/templates/spec-review.md` | ใช้กับทั้ง `spec-review.md` และ `lead-review.md` · `Reviewer: <spec-reviewer \| lead>` |
+| `.agents/templates/fix-task.md` | ผู้เขียน fix item เป็น spec-reviewer, lead หรือ qa |
+| `.agents/templates/evidence.md` | อ้าง `lead-review.md` · บรรทัดระดับความเสี่ยงและผู้ตรวจโค้ด · ผล mutation ที่ lead รันซ้ำ |
+| `.claude/agents/backend.md` ข้อ 5 | ผู้ตัดสินงานเป็น qa กับผู้ตรวจโค้ด (spec-reviewer หรือ lead) แก้ประโยคเดียว |
+| `.claude/agents/qa.md` | "หลังรอบตรวจโค้ด (โดย spec-reviewer หรือ lead)" แก้ประโยคเดียว |
+
+**ค่าที่ผมตั้งเอง:** เกณฑ์ "เกิน 5 ไฟล์" ปรับได้หลังใช้จริง
+
+**สิ่งที่อ่อนลงสำหรับ ticket ปกติ:** ไม่มีคนอื่นตรวจคุณภาพ assertion ทีละข้อแบบ spec-reviewer ข้อ 3 · mutation ตรวจซ้ำแค่ 1 จุด จากเดิมที่ spec-reviewer ลองเองหลายจุด
+
+**ตรวจแล้ว:** ไฟล์จริงทั้ง 7 ตรงกับสำเนาที่ใช้ร่าง (`cmp`) ก่อนคัดลอก · ยังไม่ได้ลองรัน ticket จริง
+
 ## ไม่ได้แก้ (ตั้งใจ)
-- `analyst.md`, `spec-reviewer.md`: ทำงานตามที่ผู้เรียกกำหนดอยู่แล้ว และไม่มีส่วนที่คุยกับ role อื่น
+- `analyst.md`, `spec-reviewer.md`: ทำงานตามที่ผู้เรียกกำหนดอยู่แล้ว และไม่มีส่วนที่คุยกับ role อื่น (ภายหลังแก้เฉพาะหัวไฟล์ เพิ่ม `Agent` ใน `disallowedTools` ตามหัวข้อด้านบน)
 - `HANDOVER.md`: ข้อ 3 กับตาราง qa ยังเขียนว่า "รันเมื่อ lead สั่ง GO" ซึ่งเป็นคำอธิบายของต้นทาง ฝั่งต้นทางควรแก้เอง
 - HANDOVER ข้อ 6.1–6.5: เป็นเรื่องกติกาเนื้องาน ไม่เกี่ยวกับการเปลี่ยนเป็น subagent จึงยังไม่ได้แก้
 

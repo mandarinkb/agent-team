@@ -17,6 +17,8 @@
 | [5. ข้อจำกัดและเมื่อไรไม่ควรใช้](PSTACK-LIMITATIONS-TH.md) | ต้นทุน (นับจำนวน subagent ต่อ flow), ขั้นตอนที่เยอะเกินงาน, ค่าเริ่มต้นเรื่องอิสระในการตัดสินใจ, เครื่องมือที่ต้องมี, ความเห็นเฉพาะตัว, ความเป็นส่วนตัว พร้อมตารางตัดสินใจและวิธีรับเฉพาะส่วนที่คุ้ม | อ่านก่อนตัดสินใจนำไปใช้กับทีม |
 | [6. ชุดเริ่มต้น: ย้าย API จาก PHP เป็น Go](starter-kit-php-to-go/README.md) | project playbook, brief template, script เทียบ response ของ PHP กับ Go (มี test) และกฎใน CLAUDE.md ที่ตรึงด้วย script | ใช้เมื่อเริ่มย้าย endpoint จริง |
 | [7. Agent Teams เทียบกับ pstack](PSTACK-VS-AGENT-TEAMS-TH.md) | เทียบสถาปัตยกรรมทีละด้าน, ข้อดีและข้อเสีย, แบบไหนกิน token มากกว่า (พร้อมปัจจัยต้นทุนและการประเมินตามสถานการณ์), การใช้ร่วมกัน และวิธีวัด token เอง | อ่านเมื่อกำลังเลือกระหว่าง Agent Teams กับ pstack |
+| [8. pstack จาก source code (มี mermaid diagram)](PSTACK-SOURCE-DESIGN-TH.md) | ทำอะไรได้บ้าง, ทำจบ flow ถึง deploy ได้ไหม, sequence diagram ของแต่ละ playbook, การจัดการ agent, การเก็บ state 7 ชั้น, เหตุผลของการออกแบบ และการนำไปใช้กับทีม `.agents/` | อ่านเมื่อจะนำหลักการไปออกแบบ subagent ของตัวเอง |
+| [9. สรุป Skill แบบเข้าใจง่าย + subagent เลือก skill เองได้ไหม](PSTACK-SKILLS-EXPLAINED-TH.md) | skill 56 ตัวแบ่งเป็นกลุ่ม บอกว่าแต่ละตัวทำอะไรและเหมาะกับงานแบบไหน, วิธีที่ skill ถูกเรียก, กลไกการเลือก skill ของ subagent ใน Claude Code และใน pstack, และการตั้งค่า agent ของทีม `.agents/` | อ่านเมื่อจะเลือก skill หรือออกแบบว่า subagent ควรใช้ skill อย่างไร |
 
 ## ลำดับการอ่านที่แนะนำ
 

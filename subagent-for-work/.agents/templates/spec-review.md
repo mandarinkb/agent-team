@@ -1,10 +1,12 @@
 # Spec review: <ticket> รอบ <n>
 
+ใช้ทั้ง `r<n>/spec-review.md` (ticket เสี่ยง) และ `r<n>/lead-review.md` (ticket ปกติ)
+
 - **Ticket:** <path ของ ticket>
 - **Revision:** <commit SHA / ช่วง commit / ชื่อไฟล์ diff ที่ตรวจ>
 - **Verdict:** <PASS | PASS (มี AC ตรวจไม่ได้ n ข้อ: AC-x) | FAIL> — FAIL เฉพาะเมื่อมี AC "ไม่ตรง"; AC ที่ตรวจไม่ได้ใน session นี้ไม่ทำให้เป็น FAIL แต่ต้องระบุ
 - **Bruno coverage:** <PASS | FAIL | n/a (ไม่มี Bruno ใน change นี้)>
-- **Reviewer:** spec-reviewer
+- **Reviewer:** <spec-reviewer | lead>
 
 ## ทีละ criterion
 

@@ -1,7 +1,7 @@
 ---
 name: spec-reviewer
 description: Spec reviewer. Checks a change against its ticket, criterion by criterion, with file:line, and writes a fix list for every mismatch. Never edits code. Use after an implementation, before the user commits.
-disallowedTools: Edit, NotebookEdit
+disallowedTools: Edit, NotebookEdit, Agent
 model: sonnet
 ---
 

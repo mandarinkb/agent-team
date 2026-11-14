@@ -8,3 +8,4 @@ settings.local.json
 # Go binaries built in backend/
 backend/server
 backend/*.exe
+/pstack-claude-main/

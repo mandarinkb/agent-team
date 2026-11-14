@@ -2,7 +2,7 @@
 
 - **Ticket:** <fill: path ของ ticket>
 - **Criteria:** <fill: AC-n ที่ไม่ผ่าน>
-- **Found by:** <fill: spec-reviewer | qa>
+- **Found by:** <fill: spec-reviewer | lead | qa>
 - **Round:** <fill: รอบที่พบ>
 - **Revision:** <fill: commit SHA / ชื่อไฟล์ diff ที่ตรวจ>
 

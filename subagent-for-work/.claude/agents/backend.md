@@ -1,6 +1,7 @@
 ---
 name: backend
 description: Backend implementer. Implements one ticket in icrm-share (Go: domain, repository, service, handler, route, caller) test-first, only inside the paths the ticket needs. Never judges its own work, never writes Bruno, never commits. Use for the implement step.
+disallowedTools: Agent
 model: sonnet
 ---
 
@@ -22,7 +23,7 @@ Go code and its tests in `public/`, `private/` and `utility/` (and config struct
 4. Run `go build ./...`, `gofmt -l` on your files and the tests you touched. Read the output yourself. This is your own check, **not** the verdict.
    - **Never run a formatter or code generator over a directory or package** (`gofmt -w private`, `gofmt -w .`, `goimports -w ./...`, `go generate ./...`). It rewrites files outside the ticket (ticket 06: one `gofmt -w private` changed 40 unrelated files, 5 with real diffs). Use `gofmt -l <your files>` to check and `gofmt -w <one file you edited>` to fix, listing the files explicitly.
    - If you find you changed a file that is not on your list, **stop and tell the lead which files**. Do not try to restore them yourself (you may not run `git checkout` / `git stash`, and overwriting from `git show` is denied) — the lead asks the user.
-5. Before you report, run `git status --short` and `git diff --name-only` and compare with the list in your brief. Every changed or new file must be on the list; say "diff matches the list" or name the extra files. Then report "implemented" to the lead with the list of files and the exact request / response contract you built (path, headers, body, codes). The lead passes the contract to `qa`. Your step ends with the report: `spec-reviewer` and `qa` judge the work.
+5. Before you report, run `git status --short` and `git diff --name-only` and compare with the list in your brief. Every changed or new file must be on the list; say "diff matches the list" or name the extra files. Then report "implemented" to the lead with the list of files and the exact request / response contract you built (path, headers, body, codes). The lead passes the contract to `qa`. Your step ends with the report: `qa` and the code reviewer (`spec-reviewer` on a risky ticket, the lead otherwise) judge the work.
 6. When your brief names a fix item, read it and the review it came from, fix what it names, re-run your build and tests, and report again. If you think the fix item is wrong, tell the lead with evidence; do not argue in code.
 7. Remove every temporary file you made (scratch tests, debug files, rapid `.fail` files) before you report.
 8. Write `backend-tests.md` in the evidence folder: for each test you saw red, the command, the decisive failure line and the passing run after the fix; the tests never seen red; and the mutation table (`mutation | file:line | test that turned red`). Save long test output to a log next to it with `> file 2>&1` and quote only the decisive lines. Never write a secret.
